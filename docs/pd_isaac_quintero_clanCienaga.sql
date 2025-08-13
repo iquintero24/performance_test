@@ -31,14 +31,14 @@ CREATE TABLE platforms(
 	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
-CREATE TABLE trasaction_status(
+CREATE TABLE transaction_status(
 	id_transaction_statu INT auto_increment PRIMARY KEY,
     transaction_statu_name VARCHAR(50) NOT NULL UNIQUE,
 	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
 	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
-CREATE TABLE trasaction_types(
+CREATE TABLE transaction_types(
 	id_transaction_type INT auto_increment PRIMARY KEY,
     transaction_type_name VARCHAR(50) NOT NULL UNIQUE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
@@ -49,18 +49,18 @@ CREATE TABLE transactions(
 	id_transaction VARCHAR(50) PRIMARY KEY,
 	id_transaction_statu INT, #foreign key
     id_transaction_type INT, #foreign key
-    invoice_number INT, #foreign key
+    invoice_number VARCHAR(50), #foreign key
 	id_platform INT, #foreign key
     date_and_time DATETIME NOT NULL, # child fields of this table
     transaction_amount INT  NOT NULL, # child fields of this table
 	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
 	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     
-	FOREIGN KEY(id_transaction_statu) REFERENCES trasaction_status(id_transaction_statu)
+	FOREIGN KEY(id_transaction_statu) REFERENCES transaction_status(id_transaction_statu)
     ON UPDATE CASCADE
     ON DELETE SET NULL,
     
-    FOREIGN KEY(id_transaction_type) REFERENCES trasaction_types(id_transaction_type)
+    FOREIGN KEY(id_transaction_type) REFERENCES transaction_types(id_transaction_type)
     ON UPDATE CASCADE
     ON DELETE SET NULL,
     
