@@ -159,7 +159,6 @@ app.delete(`${apiClients}/:id_client`, async (req, res) => {
 });
 
 //contain the total paid per customer
-// get a user by id
 app.get(`${apiClients}/total/:id_client`, async (req, res) => {
   try {
     const { id_client } = req.params;
@@ -179,6 +178,33 @@ app.get(`${apiClients}/total/:id_client`, async (req, res) => {
     );
 
     res.json(rows[0]);
+  } catch (error) {
+    res.status(500).json({
+      status: "error",
+      endpoint: req.originalUrl,
+      method: req.method,
+      message: error.message,
+    });
+  }
+});
+
+app.get("/transactions", async (req, res) => {
+  //get all clients
+  try {
+    const [rows] = await pool.query(
+      `SELECT
+   *
+FROM
+    transactions t
+JOIN
+    invoices i ON t.invoice_number = i.invoice_number
+JOIN 
+	clients c on c.id_client = i.id_client
+where t.id_transaction_statu = 1;
+`
+    );
+
+    res.json(rows);
   } catch (error) {
     res.status(500).json({
       status: "error",
